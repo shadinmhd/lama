@@ -1,0 +1,6 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background: var(--secondary-color);
+  color: var(--primary-color);
+}

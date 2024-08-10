@@ -8,10 +8,12 @@ import authRoute from "./routes/auth.route"
 import userRoute from "./routes/user.route"
 import connectDb from "./config/database"
 import authorizationMiddleware from "./middlewares/authorization.middleware"
+import projectRoute from "./routes/project.route"
 
 loadEnvFile(".env")
 
 connectDb()
+
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
@@ -25,7 +27,10 @@ app.use(cors({
 
 app.use("/user", authorizationMiddleware, userRoute)
 app.use("/auth", authRoute)
+app.use("/project", projectRoute)
+
 app.use(errorMiddleware)
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
 	console.log(`server listening http://localhost:${PORT}`)

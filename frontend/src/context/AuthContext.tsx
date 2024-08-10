@@ -8,6 +8,7 @@ import {
 import api, { handleAxiosError } from "../utils/api"
 import User from "../types/user"
 import { toast } from "sonner"
+import { PuffLoader } from "react-spinners"
 
 interface contextType {
   isLoggedin: boolean
@@ -25,6 +26,7 @@ const authContext = createContext<contextType>({
 })
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [loading, setLoading] = useState(true)
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false)
   const [loginModal, setLoginModal] = useState(false)
   const [user, setUser] = useState<User>()
@@ -41,6 +43,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
       .catch((error) => {
         handleAxiosError(error)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }, [setIsLoggedin])
 
@@ -63,6 +68,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoginModal(true)
     }
   }, [isLoggedin])
+
+  if (loading) {
+    return (
+      <div className="flex h-screen w-screen flex-col items-center justify-center">
+        <PuffLoader color="#7e22ce" />
+      </div>
+    )
+  }
 
   return (
     <authContext.Provider
